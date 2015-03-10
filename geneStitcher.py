@@ -1,18 +1,18 @@
-#/!usr/bin/env python
+#!/Usr/bin/env python
 import re
 from sys import argv
 
 """
 USAGE: geneStitcher.py alignment1.fasta  alignment2.fasta
 
-This script makes supermatrix from a list of fasta files containing alignend sequeces. 
-It also writes a 'Log' file and a simple parttition file, that can then be easily modified to declare partitions or gene blocks fro raxml, or other Phylogeny estimation models.
+This script makes super matrix from a list of fasta files containing aligned sequences. 
+It also writes a 'Log' file and a simple partition file, that can then be easily modified to declare partitions or gene blocks fro raxml, or other Phylogeny estimation models.
 
-The script expects fasta id in the following format of, which is the naming convention I am currentky using. 
+The script expects fasta id in the following format of, which is the naming convention I am currently using. 
 
 >NAME_of_OTU|Uniqueidentifier   
 
-To accomodate other variants you might need to modify the code or the input seqs.
+To accommodate other variants you might need to modify the code or the input seqs.
 """
 
 argv.remove('geneStitcher.py')
@@ -25,7 +25,7 @@ Part = open('Partition.txt', 'w+')
 #Global variables
 OTUS = []
 
-#Classess
+#Classes
 
 class FastaRecord():
     """Class for storing sequence records and related data"""
@@ -36,14 +36,14 @@ class FastaRecord():
 
 #Function definition
 def is_ID(Line):
-    """Test wheter a string correspond to fasta identifire. herein braodly defined by starting with the '>' symbol"""
+    """Test whether a string correspond to fasta identifier. herein broadly defined by starting with the '>' symbol"""
     if Line.startswith('>'):
         return True
     else:
         return False
 
 def Get_OTUS(List):
-    """ Take a file name  or list ost of file names and populates the global variable with all distinct OTUS found across all input files. The result of this inquiry, is written to the  Log file """
+    """ Take a file name  or list ost of file names and populates the global variable with all distinct OTUS found across all input files. The detailed output of this fuction is written to the  Log file """
     for Alignment in List:
         with open(Alignment, 'r') as Al:
             for Line in Al:
@@ -82,7 +82,7 @@ def Fasta_Parser(File):
     F.close()
         
 def is_Alignment(Arg):
-    """Return True or False after evaluating that the lenght of all sequences in the input file are the same length. inputs are either file names, or Fasta_record objetcs."""
+    """Return True or False after evaluating that the length of all sequences in the input file are the same length. inputs are either file names, or Fasta_record objects."""
     if type(Arg) != dict:
         Arg=Fasta_Parser(Arg)
         Ref = Arg.keys()[0]
@@ -106,7 +106,7 @@ def is_Alignment(Arg):
             return False
 
 def Write_Fasta(Dict):
-    """Simple Fasta writer. NO wrap No exrtra features."""
+    """Simple Fasta writer. NO wrap No extra features."""
     SuperMatrix = open('SuperMatrix.al', 'w')
     for Record in sorted(Dict.iterkeys()):
         Identifier='>' + Record + '\n'
@@ -116,7 +116,7 @@ def Write_Fasta(Dict):
     SuperMatrix.close()
 
             
-# Concatenite Aligments
+# Concatenate Alignments
 
 Get_OTUS(argv) # get a list with all OTUS
 SDict={key: '' for key in OTUS} #Makes an Dictionary with all OTUS as keys and and empty sequences.
@@ -124,9 +124,9 @@ CL = 0 # Initialize counter for position
 for File in argv:
     D=Fasta_Parser(File)
     if is_Alignment(D):
-        Role = 0 # Count Otus in Alignement
+        Role = 0 # Count Otus in Alignment
         Len = D[D.keys()[0]].SeqLen 
-        Dummy = '-'* Len #Generates all gap seq for the terminasl missing that loci.
+        Dummy = '-'* Len #Generates all gap seq for the terminals missing that loci.
         TotalGaps = 0 
         Init = 1 + CL
         End = Init + Len - 1
@@ -141,7 +141,7 @@ for File in argv:
                 SDict[OTU]= SDict[OTU] + Dummy
                 TotalGaps = TotalGaps + Len
     else:
-        print "Error: The File %d  contains sequences of differet lenghts!" % File
+        print "Error: The File %d  contains sequences of different lengths!" % File
         break
     Log.write("*" * 70 + '\n')
     Log.write("The alignment of the locus %s file contained %d sequences.\n" % (File, Role))
