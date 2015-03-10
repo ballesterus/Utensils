@@ -3,9 +3,9 @@ Simple scripts for working with sequence data (Fasta) for phylogenetics.
 
 geneStitcher.py		
 
-Concatenates two or aligments in fasta format to produce a supermatrix. It  otputs a log file that reports on the composition of each alignment, its length and the total gaps per file. Additionally produces a Partition.txt file, with the positions of each loci in the supermatrix. This file is intended to serve as a template for producing program specific partitioning of data-blocks.
+Concatenates two or more aligments in fasta format to produce a supermatrix. It otputs a log file that reports on the composition of each alignment, its length and the total gaps per file. Additionally produces a Partition.txt file, with the positions of each loci in the supermatrix. This file is intended to serve as a template for producing program specific partitioning of data-blocks.
 
-The script automatically collects the names of the OTUS from each alignments passed in the argument, and thus names should be the same to be considered the same OTU. The fasta identifies I am using is the following:
+The script automatically collects the names of the OTUS from each alignments passed in the argument, and thus names should be the same to be considered the same OTU. The fasta identifier format I am using is the following:
 
 >\>OTU_name|UniqueIdentifier
 
