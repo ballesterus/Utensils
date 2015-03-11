@@ -13,11 +13,11 @@ The script captures the "OTU_name" part of it and discards the unique identifier
 
 Usage:
 
->python geneSticher.py 1.fasta 2.fasta 3.fasta
+>python geneStitcher.py 1.fasta 2.fasta 3.fasta
 
 or
 
->python geneSticher.py *.fasta
+>python geneStitcher.py *.fasta
 
 Requires:
 python 2.7
