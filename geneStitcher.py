@@ -14,9 +14,13 @@ The script expects fasta id in the following format of, which is the naming conv
 
 To accommodate other variants you might need to modify the code or the input seqs.
 """
+if  argv[0] == 'geneStitcher.py':
+    argv.remove('geneStitcher.py')
+elif argv[0] =='./geneStitcher.py':
+    argv.remove('./geneStitcher.py')
 
-argv.remove('geneStitcher.py')
-#print argv
+
+print argv
 
 #Outputfiles
 Log = open('StitcherLog.out', 'w+')
@@ -52,7 +56,7 @@ def Get_OTUS(List):
                     if OTU not in OTUS:
                         OTUS.append(OTU)
         
-        Log.write("The are are %r OTUS in the input file %s. \n" % (len(OTUS), Alignment)
+        Log.write("The are are %r OTUS in the input file %s. \n" % (len(OTUS), Alignment))
         [Log.write(OTU + '\n') for OTU in OTUS]
         Al.close()
 
