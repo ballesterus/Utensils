@@ -14,11 +14,9 @@ The script expects fasta id in the following format of, which is the naming conv
 
 To accommodate other variants you might need to modify the code or the input seqs.
 """
-if  argv[0] == 'geneStitcher.py':
-    argv.remove('geneStitcher.py')
-elif argv[0] =='./geneStitcher.py':
-    argv.remove('./geneStitcher.py')
 
+argv.remove(argv[0])
+    
 
 print argv
 
