@@ -8,17 +8,19 @@ USAGE: geneStitcher.py alignment1.fasta  alignment2.fasta
 This script makes super matrix from a list of fasta files containing aligned sequences. 
 It also writes a 'Log' file and a simple partition file, that can then be easily modified to declare partitions or gene blocks fro raxml, or other Phylogeny estimation models.
 
-The script expects fasta id in the following format of, which is the naming convention I am currently using. 
+The script expects the name of the OTU to be the first element in the fasta indetifier, and with a custom character used as a delimiter.
 
 >NAME_of_OTU|Uniqueidentifier   
+
+
 
 To accommodate other variants you might need to modify the code or the input seqs.
 """
 
 argv.remove(argv[0])
-    
+Delim = raw_input( 'Insert custom delimiter character, separating the OTU name from the sequence Indetifier and/or metadata: ')
 
-print argv
+#print argv #print list of arguments. Activate for debugging.
 
 #Outputfiles
 Log = open('StitcherLog.out', 'w+')
@@ -33,7 +35,8 @@ class FastaRecord():
     """Class for storing sequence records and related data"""
     def __init__(self, IdLine):
         self.SeqId = IdLine.replace('\n', '').strip('>')
-        self.OTU, self.UniqId = self.SeqId.split('|')
+        self.OTU =self.SeqId.split(Delim)[0]
+        self.UniqId = self.SeqId.split(Delim)[1]
     
 
 #Function definition
@@ -50,7 +53,8 @@ def Get_OTUS(List):
         with open(Alignment, 'r') as Al:
             for Line in Al:
                 if Line.startswith('>'):
-                    OTU = Line.strip('>').split('|')[0]
+                    Line = Line + Delim
+                    OTU = Line.strip('>').split(Delim)[0]
                     if OTU not in OTUS:
                         OTUS.append(OTU)
         
@@ -65,13 +69,13 @@ def Fasta_Parser(File):
         Seq=''
         for Line in F:
             if is_ID(Line) and len(Seq) == 0:
-                OTU = Line.strip('>').split('|')[0]
+                OTU = Line.strip('>').split(Delim)[0]
                 Records[OTU] = FastaRecord(Line)
             elif is_ID(Line) and len(Seq) > 0:
                 Records[OTU].Seq = Seq
                 Records[OTU].SeqLen = len(Seq)
                 Records[OTU].SeqGaps = Seq.count('-')
-                OTU = Line.strip('>').split('|')[0]
+                OTU = Line.strip('>').split(Delim)[0]
                 Seq = ''
                 Records[OTU]= FastaRecord(Line)
             else:
