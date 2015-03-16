@@ -1,13 +1,11 @@
 # PoorPhyloTools
 Simple scripts for working with sequence data (Fasta) for phylogenetics.
 
-*geneStitcher.py		
+###*geneStitcher.py
+Concatenates two or more alignments in fasta format to produce a super-matrix. It outputs a log file that reports on the composition of each alignment, its length and the total gaps per file. Additionally produces a Partition.txt file, with the positions of each loci in the super-matrix. This Partition file is intended to serve as a template for producing program specific partitioning of data-blocks. The script is designed for simple concatenation tasks, more complex operations (chimeras, taxon or site masking, etc.) are not supported. For as more feature rich concatenation platform you can check out SCaFoS (http://megasun.bch.umontreal.ca/Software/scafos/scafos.html).
 
-Concatenates two or more alignments in fasta format to produce a super-matrix. It outputs a log file that reports on the composition of each alignment, its length and the total gaps per file. Additionally produces a Partition.txt file, with the positions of each loci in the super-matrix. This Partition file is intended to serve as a template for producing program specific partitioning of data-blocks.
+The script captures the "OTU_name" part of it and discards the unique identifier. It automatically collects the names of the OTUS from each alignment passed in the argument, and thus OTU name part of the identifier should be the same to be considered the same OTU. You will be prompt to provide A delimiter character common in all the input files e. g: | _ \ \s , ; : etc. If your fasta identifiers only have the OTU name (no accession number or other metadata), type any arbitrary character, so the script unpacks the name of the OTU  correctly!
 
-
-The script automatically collects the names of the OTUS from each alignments passed in the argument, and thus OTU name part of the identifier should be the same to be considered the same OTU. You will be prompt to provide A delimiter character common in all the input files e. g: "|" "_" "\" "s" "," ";" ":" etc. If your fasta identifiers only have the OTU name (no accession number or other metadata), type any arbitrary character, so the script unpacks the name of the OTU  correctly!
-The script captures the "OTU_name" part of it and discards the unique identifier.
 
 Usage:
 
@@ -20,7 +18,7 @@ or
 
 Example:
 
-File1.fasta :
+File1.fasta:
 	 
 	 >OTU1|UniqueIdentifier
 	 AGATGGATGGAGATTTAGGA
