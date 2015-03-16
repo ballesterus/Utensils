@@ -22,16 +22,16 @@ Example:
 
 File1.fasta :
 	 
-	 \>OTU1|UniqueIdentifier
+	 >OTU1|UniqueIdentifier
 	 AGATGGATGGAGATTTAGGA
-	 \>OTU2
+	 >OTU2
 	 TTTAGGTATTCTATCAGAGG
-File2.fasta
-	\>OTU1|ADifferentIndetifier with crazy stuff in the end 13145661:
+File2.fasta:
+	>OTU1|ADifferentIndetifier with crazy stuff in the end 13145661:
 	TTTGGATTAGTTTAGGA
-	\>OTU2
+	>OTU2
 	TATTTCAGTAGTTGAGA
-	\>OTU3
+	>OTU3
 	CCCCCAATATTATTTTA
 
 
@@ -41,11 +41,11 @@ File2.fasta
 
 SuperMatrix.al :
 
-      \>OTU1	
+      >OTU1	
       AGATGGATGGAGATTTAGGATTTGGATTAGTTTAGGA
-      \>OTU2
+      >OTU2
       TTTAGGTATTCTATCAGAGGTATTTCAGTAGTTGAGA
-      \>OTU3
+      >OTU3
       --------------------CCCCCAATATTATTTTA
 
 
