@@ -3,9 +3,10 @@ Simple scripts for working with sequence data (Fasta) for phylogenetics.
 
 *geneStitcher.py		
 
-Concatenates two or more aligments in fasta format to produce a supermatrix. It otputs a log file that reports on the composition of each alignment, its length and the total gaps per file. Additionally produces a Partition.txt file, with the positions of each loci in the supermatrix. This file is intended to serve as a template for producing program specific partitioning of data-blocks.
+Concatenates two or more alignments in fasta format to produce a super-matrix. It outputs a log file that reports on the composition of each alignment, its length and the total gaps per file. Additionally produces a Partition.txt file, with the positions of each loci in the super-matrix. This Partition file is intended to serve as a template for producing program specific partitioning of data-blocks.
 
-The script automatically collects the names of the OTUS from each alignments passed in the argument, and thus OTU name part of the identifier should be the same to be considered the same OTU. You will BE promt to provide A  delimiter charcter common in all the imput files eg. | _ \s , ; : etc. If your fasta identifiers only have the OTU name (no accssion number or other methadata), type any arbitrary character, so the script upacks the name of the OTU  correctly!
+
+The script automatically collects the names of the OTUS from each alignments passed in the argument, and thus OTU name part of the identifier should be the same to be considered the same OTU. You will be prompt to provide A delimiter character common in all the input files e. g: "|", "_", "\", "s", ",", ";", ":"" etc. If your fasta identifiers only have the OTU name (no accession number or other methadata), type any arbitrary character, so the script unpacks the name of the OTU  correctly!
 The script captures the "OTU_name" part of it and discards the unique identifier.
 
 
@@ -26,12 +27,15 @@ File1.fasta :
 	 AGATGGATGGAGATTTAGGA
 	 >OTU2
 	 TTTAGGTATTCTATCAGAGG
+
+
 File2.fasta:
-	>OTU1|ADifferentIndetifier with crazy stuff in the end 13145661:
+
+	>OTU1|ADifferentIndetifier with crazy stuff in the end 13145661.0b:
 	TTTGGATTAGTTTAGGA
 	>OTU2
 	TATTTCAGTAGTTGAGA
-	>OTU3
+	>OTU3|GB|5456464564.4
 	CCCCCAATATTATTTTA
 
 
@@ -39,7 +43,7 @@ File2.fasta:
 >Insert custom delimiter character, separating the OTU name from the sequence Indetifier and/or metadata: |
 
 
-SuperMatrix.al :
+SuperMatrix.al:
 
       >OTU1	
       AGATGGATGGAGATTTAGGATTTGGATTAGTTTAGGA
