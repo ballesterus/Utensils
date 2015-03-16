@@ -18,7 +18,7 @@ To accommodate other variants you might need to modify the code or the input seq
 """
 
 argv.remove(argv[0])
-Delim = raw_input( 'Insert custom delimiter character, separating the OTU name from the sequence Indetifier and/or metadata: ')
+Delim = raw_input( 'Insert a custom delimiter character separating the OTU name from the sequence indentifier and/or metadata: ')
 
 #print argv #print list of arguments. Activate for debugging.
 
