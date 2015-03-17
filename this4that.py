@@ -3,8 +3,10 @@ import re
 import os
 from sys import argv
 
-"""A Script for changing names of OTUS in phylogenetic files (or any other text file. In case of fasta files, it replaces the whole identifier line with the new name. for newick, nexux or other file.. it only changes mathcing names.
-Replacing names can be easily accoplish using sed, however this scripts is intended to facilitate that task. You can create your reference CSV in any spreadsheet. TODO multiculumn csv  and name editor.
+"""A Script for changing names of OTUS in phylogenetic files (or any other text file). In case of fasta files, it replaces the whole identifier line with the new name. For newick, nexus or other files.. it only changes matching names.
+Replacing names can be easily accomplished using sed, but it might result complicated when renaming hundreds of leaves in many files this script is intended to facilitate that task, with little editing. You can create your reference CSV in any spreadsheet. 
+
+TODO multiculumn csv  and more complex name editor.
 
 Usage: python this4that.py names.csv target.fasta"""
 
