@@ -1,10 +1,9 @@
 # PoorPhyloTools
 Simple scripts for working with sequence data (Fasta) for phylogenetics.
 <ul>
-	<i>geneStitcher.py<\i>
-	<i>this4that.py<\i
-	>
-<\ul>
+	<li>geneStitcher.py</li>
+	<li>this4that.py</li>
+</ul>
 
 
 
