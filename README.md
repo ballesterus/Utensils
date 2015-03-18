@@ -9,9 +9,11 @@ Simple scripts for working with sequence data and trees(mostly fasta and newick)
 <h3>geneStitcher.py</h3>
 Concatenates two or more alignments in fasta format to produce a super-matrix. It outputs a log file that reports on the composition of each alignment, its length and the total gaps per file. Additionally produces a Partition.txt file, with the positions of each loci in the super-matrix. This Partition file is intended to serve as a template for producing program specific partitioning of data-blocks. The script is designed for simple concatenation tasks, more complex operations (chimeras, taxon or site masking, etc.) are not supported. For a more feature rich concatenation platform you can check out SCaFoS (http://megasun.bch.umontreal.ca/Software/scafos/scafos.html).
 
-The script captures the "OTU_name" part of it and discards the unique identifier. It automatically collects the names of the OTUS from each alignment passed in the argument, and thus OTU name part of the identifier should be the same to be considered the same OTU. You will be prompt to provide A delimiter character common in all the input files e. g: "| _  \s , ; :" etc. If your fasta identifiers only have the OTU name (no accession number or other metadata), type any arbitrary character so the script unpacks the name of the OTU  correctly!
+The script captures the "OTU_name" part of it and discards the unique identifier. It automatically collects the names of the OTUS from each alignment passed in the argument, and thus OTU name part of the identifier should be the same to be considered the same OTU. You will be prompt to provide A delimiter character common in all the input files e. g: "| _  \s , ; :" etc. If your fasta identifiers only have the OTU name (no accession number or other metadata), type any arbitrary character!
 
-It outputs a log file that reports on the composition of each alignment, its length and the total gaps sites per file. Additionally produces a Partition.txt file, with the positions of each loci in the supermatrix. This file is intended to serve as a template for producing program specific data-blocks.
+It outputs a log file that reports on the composition of each alignment, its length and the total gaps sites per file. Additionally produces a Partition.txt file, with the positions of each input alignment in the supermatrix. This file is intended to serve as a template for producing program specific data-blocks.
+
+The script contains simple functions for parsing and writting fasta (Fasta_Parser(), Write_Fasta()), and class for fasta records (FastaRecord) which can be recycled and repurposed.
 
 Usage:
 
@@ -55,7 +57,7 @@ SuperMatrix.al:
 
 <h3>this4that.py</h3>
 
-Simple leaf renaming script. Automatically renames fasta identifiers, tree leaf nodes, and other ocurremces of the names o replace. Requires a commas delimited file (csv) with two columns, the fisrt column being the current name to match (target), and the second contains the new name (replacement). Does not deletes input files, creates a new version o the input (v2) with the replaced names.
+Simple leaf renaming script. Automatically renames fasta identifiers, tree leaf nodes, and other ocurrences of the names to replace. Requires a commas delimited file (csv) with exactly two columns; the fisrt column being the current name to match (target), and the second contains the new name (replacement). Does not deletes input files, creates a new version o the input (v2) with the replaced names.
 
 usage: 
 
