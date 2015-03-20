@@ -1,5 +1,5 @@
-# PoorPhyloTools
-Simple scripts for working with sequence data and trees(mostly fasta and newick) for phylogenetics.
+# PhyloUtensils
+Simple scripts for working with sequence data and trees (mostly fasta and newick) for phylogenetics. (Renamed  from PoorPhyloTools because there are other 'PhyloTools' repos)
 <ul>
 	<li>geneStitcher.py</li>
 	<li>this4that.py</li>
