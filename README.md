@@ -82,7 +82,7 @@ TODO:
 
 <h3><a name='3'>RYplace.py</a></h3>
 
-Recodes nucleotide sequences in the input file(s)(fasta) replacing  purines (A, G) for R and r pyrimidines (T, C) for Y. Its purpose is to ameliorate the effects base composition biases in phylogenetic inference. Yu should however test fisrt if you data partition sufferes from heterogeneus base composition,  eg. p4 https://code.google.com/p/p4-phylogenetics/
+Recodes nucleotide sequences in the input file(s)(fasta) replacing  purines (A, G) with 'R' and  pyrimidines (T, C) with 'Y'. Its purpose is to ameliorate the effects base composition biases in phylogenetic inference. Yu should however test fisrt if you data partition sufferes from heterogeneus base composition,  eg. p4 https://code.google.com/p/p4-phylogenetics/
 
 This script takes as argumenets the number of the codon to change 1, 2, 3 or N to recode the whole sequence.
 usage:
