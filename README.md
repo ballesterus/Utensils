@@ -88,7 +88,9 @@ Recodes nucleotide sequences in the input file(s)(fasta) replacing  purines (A, 
 This script takes as argumenets the number of the codon to change 1, 2, 3 or N to recode the whole sequence.
 usage:
 
-'''python RYplace.py 3 file1.fasta file2.fasta filen.fasta'''
+
+```python RYplace.py 3 file1.fasta file2.fasta filen.fasta```
+
 
 The RY coded versions add the suffix '_RY' to the file name.
 
