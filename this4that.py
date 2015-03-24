@@ -10,7 +10,7 @@ This script does not replace the input file, instead creates a version of the sa
 
 
 TODO 
-    * multiculumn csv and more complex name editor˘
+    * multiculumn csv and more complex name editor.
     * verify all identifiers where replaced or write an alert.
 Usage: 
     python this4that.py names.csv target.fasta
@@ -20,6 +20,8 @@ Usage:
 
 CSV_file = argv[1]
 argv.remove(argv[0])
+argv.remove(CSV_file)
+print argv
 Target = argv
 Log = open('this4that.log', 'w')
 Map={}
