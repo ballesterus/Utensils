@@ -1,24 +1,19 @@
 #!/Usr/bin/env python
+ 
+import argparse
 import re
 from sys import argv
+parser = argparse.ArgumentParser(description='This script concatenates alignmnets in fasta Format')
+ 
+parser.add_argument('-d', action= 'store', dest = 'delimiter', default = '|', type =str,  help='Specify character delimiter' )
+parser.add_argument('-a', dest = 'alignments', type = str, nargs= '+',  help = 'files to process(fasta alignment)')
 
-"""
-USAGE: geneStitcher.py alignment1.fasta  alignment2.fasta
+arguments = parser.parse_args()
 
-This script makes super matrix from a list of fasta files containing aligned sequences. 
-It also writes a 'Log' file and a simple partition file, that can then be easily modified to declare partitions or gene blocks fro raxml, or other Phylogeny estimation models.
+print arguments
 
-The script expects the name of the OTU to be the first element in the fasta indetifier, and with a custom character used as a delimiter.
-
->NAME_of_OTU|Uniqueidentifier   
-
-
-
-To accommodate other variants you might need to modify the code or the input seqs.
-"""
-
-argv.remove(argv[0])
-Delim = raw_input( 'Insert a custom delimiter character separating the OTU name from the sequence indentifier and/or metadata: ')
+Delim = arguments.delimiter
+Targets = arguments.alignments
 
 #print argv #print list of arguments. Activate for debugging.
 
@@ -34,7 +29,7 @@ OTUS = []
 class FastaRecord():
     """Class for storing sequence records and related data"""
     def __init__(self, IdLine):
-        self.SeqId = IdLine.replace('\n', '').strip('>')
+        self.SeqId = IdLine.replace('\n', '').strip('>') + Delim
         self.OTU =self.SeqId.split(Delim)[0]
         self.UniqId = self.SeqId.split(Delim)[1]
     
@@ -124,37 +119,42 @@ def Write_Fasta(Dict):
             
 # Concatenate Alignments
 
-Get_OTUS(argv) # get a list with all OTUS
-SDict={key: '' for key in OTUS} #Makes an Dictionary with all OTUS as keys and and empty sequences.
-CL = 0 # Initialize counter for position
-for File in argv:
-    D=Fasta_Parser(File)
-    if is_Alignment(D):
-        Role = 0 # Count Otus in Alignment
-        Len = D[D.keys()[0]].SeqLen 
-        Dummy = '-'* Len #Generates all gap seq for the terminals missing that loci.
-        TotalGaps = 0 
-        Init = 1 + CL
-        End = Init + Len - 1
-        CL = End
-        Part.write("%s, %d-%d;\n"  % (File.split('.')[0], Init, End))
-        for OTU in SDict.iterkeys(): #Populate the Dictionary with Sequences.
-            if OTU in D.keys():
-                SDict[OTU] = SDict[OTU] + D[OTU].Seq
-                Role +=1
-                TotalGaps = TotalGaps + D[OTU].SeqGaps
-            else:
-                SDict[OTU]= SDict[OTU] + Dummy
-                TotalGaps = TotalGaps + Len
-    else:
-        print "Error: The File %d  contains sequences of different lengths!" % File
-        break
-    Log.write("*" * 70 + '\n')
-    Log.write("The alignment of the locus %s file contained %d sequences.\n" % (File, Role))
-    Log.write("The length of the alignment is %d positions.\n" % Len)
-    Log.write("The alignment contains %d missing entries.\n" % TotalGaps)
+if len(argv) < 4:
+    print "Error not enough arguments to proceed"
+
+else:
+    Get_OTUS(Targets) # get a list with all OTUS
+    SDict={key: '' for key in OTUS} #Makes an Dictionary with all OTUS as keys and and empty sequences.
+    CL = 0 # Initialize counter for position
+
+    for File in Targets:
+        D=Fasta_Parser(File)
+        if is_Alignment(D):
+            Role = 0 # Count Otus in Alignment
+            Len = D[D.keys()[0]].SeqLen 
+            Dummy = '-'* Len #Generates all gap seq for the terminals missing that loci.
+            TotalGaps = 0 
+            Init = 1 + CL
+            End = Init + Len - 1
+            CL = End
+            Part.write("%s, %d-%d;\n"  % (File.split('.')[0], Init, End))
+            for OTU in SDict.iterkeys(): #Populate the Dictionary with Sequences.
+                if OTU in D.keys():
+                    SDict[OTU] = SDict[OTU] + D[OTU].Seq
+                    Role +=1
+                    TotalGaps = TotalGaps + D[OTU].SeqGaps
+                else:
+                    SDict[OTU]= SDict[OTU] + Dummy
+                    TotalGaps = TotalGaps + Len
+        else:
+            print "Error: The File %d  contains sequences of different lengths!" % File
+            break
+        Log.write("*" * 70 + '\n')
+        Log.write("The alignment of the locus %s file contained %d sequences.\n" % (File, Role))
+        Log.write("The length of the alignment is %d positions.\n" % Len)
+        Log.write("The alignment contains %d missing entries.\n" % TotalGaps)
 
 
-Write_Fasta(SDict)
-Log.close()
-Part.close()
+    Write_Fasta(SDict)
+    Log.close()
+    Part.close()
