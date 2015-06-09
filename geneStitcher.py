@@ -10,7 +10,7 @@ parser.add_argument('-a', dest = 'alignments', type = str, nargs= '+',  help = '
 
 arguments = parser.parse_args()
 
-print arguments
+%print arguments
 
 Delim = arguments.delimiter
 Targets = arguments.alignments
