@@ -11,42 +11,46 @@ Simple scripts for working with sequence data and trees (mostly fasta and newick
 <h3><a name ='1'>geneStitcher.py</a></h3>
 Concatenates two or more alignments in fasta format to produce a super-matrix. It outputs a log file that reports on the composition of each alignment, its length and the total gaps per file. Additionally produces a Partition.txt file, with the positions of each loci in the super-matrix. This Partition file is intended to serve as a template for producing program specific partitioning of data-blocks. The script is designed for simple concatenation tasks, more complex operations (chimeras, taxon or site masking, etc.) are not supported. For a more feature rich concatenation platform you can check out SCaFoS (http://megasun.bch.umontreal.ca/Software/scafos/scafos.html).
 
-The script captures the "OTU_name", provided this is the first element in the fasta indetifier (see example below), and discards the rest of the sequence metadata. It first collects the names of the OTU's from each alignment passed in the argument; thus the 'OTU name' part of the identifier should be the same to be considered the same OTU. You will be prompt to provide a delimiter character common in all the input files e. g: "| _  \s , ; :" etc. If your fasta identifiers only have the OTU name (no accession number or other metadata), type any arbitrary character!
+The script captures the "OTU_name", provided this is the first element in the fasta indentifier (see example below), and discards the rest of the sequence metadata. It first collects the names of the OTU's from each alignment passed in the argument; thus the 'OTU name' part of the identifier should be exactly the same in all files to be considered the same OTU. The Custom delimiter character that separates species (OTU) nam from the sequence id, is provided with the argument -d. 
 
-It outputs a log file that reports on the composition of each alignment, its length and the total gaps sites per file. Additionally produces a Partition.txt file, with the positions of each input alignment in the supermatrix. This file is intended to serve as a template for producing program specific data-blocks.
+As outputs, the script produces a ``log'' file that reports on the taxon composition of each alignment, its length and the total gaps sites per file. Additionally produces a Partition.txt file, with the positions of each input alignment in the supermatrix. This file is intended to serve as a template for producing program specific data-blocks.
 
 The script contains simple functions for parsing and writting fasta (Fasta_Parser(), Write_Fasta()), and class for fasta records (FastaRecord) which can be recycled and repurposed.
 
 Usage:
 
+printing help:
+
+```>python geneStitcher.py -h```
+
+
 ```>python geneStitcher.py 1.fasta 2.fasta 3.fasta```
 
 or
 
-```>python geneStitcher.py *.fasta```
+```>python geneStitcher.py *.fasta -d '@'```
 
 Example:
 
 File1.fasta:
 	 
-	 >OTU1|UniqueIdentifier
+	 >OTU1@UniqueIdentifier
 	 AGATGGATGGAGATTTAGGA
 	 >OTU2
 	 TTTAGGTATTCTATCAGAGG
 
 File2.fasta:
 
-	>OTU1|ADifferentIndentifier with crazy stuff in the end 13145661.0b:
+	>OTU1@ADifferentIndentifier with crazy stuff in the end 13145661.0b:
 	TTTGGATTAGTTTAGGA
 	>OTU2
 	TATTTCAGTAGTTGAGA
-	>OTU3|GB|5456464564.4
+	>OTU3@GB|5456464564.4
 	CCCCCAATATTATTTTA
 
 ```
 $./geneSticther File 1.fasta File2.fasta
 
-Insert custom delimiter character, separating the OTU name from the sequence indentifier and/or metadata: |
 ```
 SuperMatrix.al:
 
