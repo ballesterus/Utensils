@@ -1,4 +1,4 @@
-#!/Usr/bin/env python
+#!/usr/bin/env python
  
 import argparse
 import re
@@ -7,7 +7,6 @@ parser = argparse.ArgumentParser(description='This script concatenates alignmnet
  
 parser.add_argument('-d', action= 'store', dest = 'delimiter', default = '|', type =str,  help='Specify character delimiter' )
 parser.add_argument('-a', dest = 'alignments', type = str, nargs= '+',  help = 'files to process(fasta alignment)')
-
 arguments = parser.parse_args()
 
 #print arguments
@@ -34,7 +33,7 @@ class FastaRecord():
         self.UniqId = self.SeqId.split(Delim)[1]
     
 
-#Function definition
+#Function definitions
 def is_ID(Line):
     """Test whether a string correspond to fasta identifier. herein broadly defined by starting with the '>' symbol"""
     if Line.startswith('>'):
