@@ -1,12 +1,12 @@
-#!/Usr/bin/env python
+#!/usr/bin/env python
  
 import argparse
 import re
 from sys import argv
 parser = argparse.ArgumentParser(description='This script concatenates alignmnets in fasta Format')
  
-parser.add_argument('-d', action= 'store', dest = 'delimiter', default = '|', type =str,  help='Specify character delimiter' )
-parser.add_argument('-a', dest = 'alignments', type = str, nargs= '+',  help = 'files to process(fasta alignment)')
+parser.add_argument('-d', action= 'store', dest = 'delimiter', default = ' ', type =str,  help='Specify the field delimiter character in fasta identifiers. It is assumed thatthe fist element represents the OTU' )
+parser.add_argument('-a', dest = 'alignments', type = str, nargs= '+',  help = 'files to process(fasta alignments).')
 
 arguments = parser.parse_args()
 
@@ -43,7 +43,7 @@ def is_ID(Line):
         return False
 
 def Get_OTUS(List):
-    """ Take a file name  or list ost of file names and populates the global variable with all distinct OTUS found across all input files. The detailed output of this fuction is written to the  Log file """
+    """ Take a file name  or list of of file names and populates the global variable with all distinct OTUS found across all input files. The detailed output of this fuction is written to the  Log file """
     for Alignment in List:
         with open(Alignment, 'r') as Al:
             for Line in Al:
@@ -52,7 +52,6 @@ def Get_OTUS(List):
                     OTU = Line.strip('>').split(Delim)[0]
                     if OTU not in OTUS:
                         OTUS.append(OTU)
-        
         Log.write("The are are %r OTUS in the input file %s. \n" % (len(OTUS), Alignment))
         [Log.write(OTU + '\n') for OTU in OTUS]
         Al.close()
@@ -83,7 +82,7 @@ def Fasta_Parser(File):
     F.close()
         
 def is_Alignment(Arg):
-    """Return True or False after evaluating that the length of all sequences in the input file are the same length. inputs are either file names, or Fasta_record objects."""
+    """Return True or False after evaluating that the length of all sequences in the input file are the same length.Arguments are either file names, or Fasta_record objects."""
     if type(Arg) != dict:
         Arg=Fasta_Parser(Arg)
         Ref = Arg.keys()[0]
@@ -118,43 +117,42 @@ def Write_Fasta(Dict):
 
             
 # Concatenate Alignments
+if __name__ == "__main__":
+    if len(argv) < 4:
+        print "Error not enough arguments to proceed"
 
-if len(argv) < 4:
-    print "Error not enough arguments to proceed"
+    else:
+        Get_OTUS(Targets) # get a list with all OTUS
+        SDict={key: '' for key in OTUS} #Makes an Dictionary with all OTUS as keys and and empty sequences.
+        CL = 0 # Initialize counter for position
 
-else:
-    Get_OTUS(Targets) # get a list with all OTUS
-    SDict={key: '' for key in OTUS} #Makes an Dictionary with all OTUS as keys and and empty sequences.
-    CL = 0 # Initialize counter for position
+        for File in Targets:
+            D=Fasta_Parser(File)
+            if is_Alignment(D):
+                Role = 0 # Count Otus in Alignment
+                Len = D[D.keys()[0]].SeqLen 
+                Dummy = '-'* Len #Generates all gap seq for the terminals missing that loci.
+                TotalGaps = 0 
+                Init = 1 + CL
+                End = Init + Len - 1
+                CL = End
+                Part.write("%s, %d-%d;\n"  % (File.split('.')[0], Init, End))
+                for OTU in SDict.iterkeys(): #Populate the Dictionary with Sequences.
+                    if OTU in D.keys():
+                        SDict[OTU] = SDict[OTU] + D[OTU].Seq
+                        Role +=1
+                        TotalGaps = TotalGaps + D[OTU].SeqGaps
+                    else:
+                        SDict[OTU]= SDict[OTU] + Dummy
+                        TotalGaps = TotalGaps + Len
+            else:
+                print "Error: The File %d  contains sequences of different lengths!" % File
+                break
+            Log.write("*" * 70 + '\n')
+            Log.write("The alignment of the locus %s file contained %d sequences.\n" % (File, Role))
+            Log.write("The length of the alignment is %d positions.\n" % Len)
+            Log.write("The alignment contains %d missing entries.\n" % TotalGaps)
 
-    for File in Targets:
-        D=Fasta_Parser(File)
-        if is_Alignment(D):
-            Role = 0 # Count Otus in Alignment
-            Len = D[D.keys()[0]].SeqLen 
-            Dummy = '-'* Len #Generates all gap seq for the terminals missing that loci.
-            TotalGaps = 0 
-            Init = 1 + CL
-            End = Init + Len - 1
-            CL = End
-            Part.write("%s, %d-%d;\n"  % (File.split('.')[0], Init, End))
-            for OTU in SDict.iterkeys(): #Populate the Dictionary with Sequences.
-                if OTU in D.keys():
-                    SDict[OTU] = SDict[OTU] + D[OTU].Seq
-                    Role +=1
-                    TotalGaps = TotalGaps + D[OTU].SeqGaps
-                else:
-                    SDict[OTU]= SDict[OTU] + Dummy
-                    TotalGaps = TotalGaps + Len
-        else:
-            print "Error: The File %d  contains sequences of different lengths!" % File
-            break
-        Log.write("*" * 70 + '\n')
-        Log.write("The alignment of the locus %s file contained %d sequences.\n" % (File, Role))
-        Log.write("The length of the alignment is %d positions.\n" % Len)
-        Log.write("The alignment contains %d missing entries.\n" % TotalGaps)
-
-
-    Write_Fasta(SDict)
-    Log.close()
-    Part.close()
+            Write_Fasta(SDict)
+        Log.close()
+        Part.close()
