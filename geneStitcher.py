@@ -3,10 +3,10 @@
 import argparse
 import re
 from sys import argv
-parser = argparse.ArgumentParser(description='This script concatenates alignmnets in fasta Format')
+parser = argparse.ArgumentParser(description='This script concatenates alignmnets in fasta format')
  
-parser.add_argument('-d', action= 'store', dest = 'delimiter', default = '|', type =str,  help='Specify character delimiter' )
-parser.add_argument('-a', dest = 'alignments', type = str, nargs= '+',  help = 'files to process(fasta alignment)')
+parser.add_argument('-d', action= 'store', dest = 'delimiter', default = '|', type =str,  help='Specify field delimiter in fasta id. fisrt element is considered to be OTU name.' )
+parser.add_argument('-a', dest = 'alignments', type = str, nargs= '+',  help = 'Files to process(fasta alignment)')
 arguments = parser.parse_args()
 
 #print arguments
@@ -117,43 +117,40 @@ def Write_Fasta(Dict):
 
             
 # Concatenate Alignments
+if __name__ == "__main__":
+    if len(argv) < 4:
+        print "Error not enough arguments to proceed"
+    else:
+        Get_OTUS(Targets) # get a list with all OTUS
+        SDict={key: '' for key in OTUS} #Makes an Dictionary with all OTUS as keys and and empty sequences.
+        CL = 0 # Initialize counter for position
 
-if len(argv) < 4:
-    print "Error not enough arguments to proceed"
-
-else:
-    Get_OTUS(Targets) # get a list with all OTUS
-    SDict={key: '' for key in OTUS} #Makes an Dictionary with all OTUS as keys and and empty sequences.
-    CL = 0 # Initialize counter for position
-
-    for File in Targets:
-        D=Fasta_Parser(File)
-        if is_Alignment(D):
-            Role = 0 # Count Otus in Alignment
-            Len = D[D.keys()[0]].SeqLen 
-            Dummy = '-'* Len #Generates all gap seq for the terminals missing that loci.
-            TotalGaps = 0 
-            Init = 1 + CL
-            End = Init + Len - 1
-            CL = End
-            Part.write("%s, %d-%d;\n"  % (File.split('.')[0], Init, End))
-            for OTU in SDict.iterkeys(): #Populate the Dictionary with Sequences.
-                if OTU in D.keys():
-                    SDict[OTU] = SDict[OTU] + D[OTU].Seq
-                    Role +=1
-                    TotalGaps = TotalGaps + D[OTU].SeqGaps
-                else:
-                    SDict[OTU]= SDict[OTU] + Dummy
-                    TotalGaps = TotalGaps + Len
-        else:
-            print "Error: The File %d  contains sequences of different lengths!" % File
-            break
-        Log.write("*" * 70 + '\n')
-        Log.write("The alignment of the locus %s file contained %d sequences.\n" % (File, Role))
-        Log.write("The length of the alignment is %d positions.\n" % Len)
-        Log.write("The alignment contains %d missing entries.\n" % TotalGaps)
-
-
-    Write_Fasta(SDict)
-    Log.close()
-    Part.close()
+        for File in Targets:
+            D=Fasta_Parser(File)
+            if is_Alignment(D):
+                Role = 0 # Count Otus in Alignment
+                Len = D[D.keys()[0]].SeqLen 
+                Dummy = '-'* Len #Generates all gap seq for the terminals missing that loci.
+                TotalGaps = 0 
+                Init = 1 + CL
+                End = Init + Len - 1
+                CL = End
+                Part.write("%s, %d-%d;\n"  % (File.split('.')[0], Init, End))
+                for OTU in SDict.iterkeys(): #Populate the Dictionary with Sequences.
+                    if OTU in D.keys():
+                        SDict[OTU] = SDict[OTU] + D[OTU].Seq
+                        Role +=1
+                        TotalGaps = TotalGaps + D[OTU].SeqGaps
+                    else:
+                        SDict[OTU]= SDict[OTU] + Dummy
+                        TotalGaps = TotalGaps + Len
+            else:
+                print "Error: The File %d  contains sequences of different lengths!" % File
+                break
+            Log.write("*" * 70 + '\n')
+            Log.write("The alignment of the locus %s file contained %d sequences.\n" % (File, Role))
+            Log.write("The length of the alignment is %d positions.\n" % Len)
+            Log.write("The alignment contains %d missing entries.\n" % TotalGaps)
+        Write_Fasta(SDict)
+        Log.close()
+        Part.close()
