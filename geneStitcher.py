@@ -3,10 +3,11 @@
 import argparse
 import re
 from sys import argv
-parser = argparse.ArgumentParser(description='This script concatenates alignmnets in fasta Format')
+parser = argparse.ArgumentParser(description='This script concatenates alignmnets in fasta format')
  
-parser.add_argument('-d', action= 'store', dest = 'delimiter', default = ' ', type =str,  help='Specify the field delimiter character in fasta identifiers. It is assumed thatthe fist element represents the OTU' )
-parser.add_argument('-a', dest = 'alignments', type = str, nargs= '+',  help = 'files to process(fasta alignments).')
+
+parser.add_argument('-d', action= 'store', dest = 'delimiter', default = '|', type =str,  help='Specify field delimiter in fasta id. fisrt element is considered to be OTU name.' )
+parser.add_argument('-a', dest = 'alignments', type = str, nargs= '+',  help = 'Files to process(fasta alignment)')
 
 arguments = parser.parse_args()
 
@@ -34,7 +35,7 @@ class FastaRecord():
         self.UniqId = self.SeqId.split(Delim)[1]
     
 
-#Function definition
+#Function definitions
 def is_ID(Line):
     """Test whether a string correspond to fasta identifier. herein broadly defined by starting with the '>' symbol"""
     if Line.startswith('>'):
@@ -120,7 +121,10 @@ def Write_Fasta(Dict):
 if __name__ == "__main__":
     if len(argv) < 4:
         print "Error not enough arguments to proceed"
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0ee1f9d633cfea431a8580b419374563222f0fa5
     else:
         Get_OTUS(Targets) # get a list with all OTUS
         SDict={key: '' for key in OTUS} #Makes an Dictionary with all OTUS as keys and and empty sequences.
@@ -153,6 +157,6 @@ if __name__ == "__main__":
             Log.write("The length of the alignment is %d positions.\n" % Len)
             Log.write("The alignment contains %d missing entries.\n" % TotalGaps)
 
-            Write_Fasta(SDict)
+        Write_Fasta(SDict)
         Log.close()
         Part.close()
