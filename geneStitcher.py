@@ -3,11 +3,10 @@
 import argparse
 import re
 from sys import argv
-parser = argparse.ArgumentParser(description='This script concatenates alignmnets in fasta format')
+parser = argparse.ArgumentParser(description='This script is  a simple script for concatenate alignments in fasta format.')
  
-
-parser.add_argument('-d', action= 'store', dest = 'delimiter', default = '|', type =str,  help='Specify field delimiter in fasta id. fisrt element is considered to be OTU name.' )
-parser.add_argument('-a', dest = 'alignments', type = str, nargs= '+',  help = 'Files to process(fasta alignment)')
+parser.add_argument('-d', action= 'store', dest = 'delimiter', default = '|', type =str,  help='Specify field delimiter in fasta identifier. First element is considered to be OTU name and should be identical in the different alignments.')
+parser.add_argument('-in', dest = 'alignments', type = str, nargs= '+',  help = 'Files to process(fasta alignment)')
 
 arguments = parser.parse_args()
 
@@ -119,17 +118,12 @@ def Write_Fasta(Dict):
             
 # Concatenate Alignments
 if __name__ == "__main__":
-    if len(argv) < 4:
-        print "Error not enough arguments to proceed"
-<<<<<<< HEAD
-
-=======
->>>>>>> 0ee1f9d633cfea431a8580b419374563222f0fa5
+    if len(args.alignments) < 4:
+        print "Error not enough arguments to proceed, you need at least two alignments to concatenate."
     else:
         Get_OTUS(Targets) # get a list with all OTUS
-        SDict={key: '' for key in OTUS} #Makes an Dictionary with all OTUS as keys and and empty sequences.
+        SDict={key:'' for key in OTUS} #Makes an Dictionary with all OTUS as keys and and empty sequences.
         CL = 0 # Initialize counter for position
-
         for File in Targets:
             D=Fasta_Parser(File)
             if is_Alignment(D):
