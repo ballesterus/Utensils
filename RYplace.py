@@ -1,4 +1,4 @@
-#!usr/bin/env python
+#!/usr/bin/env python
 import re
 import os
 from sys import argv
