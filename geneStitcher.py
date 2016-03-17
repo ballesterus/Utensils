@@ -3,10 +3,11 @@
 import argparse
 import re
 from sys import argv
-parser = argparse.ArgumentParser(description='This script concatenates alignmnets in fasta format')
+parser = argparse.ArgumentParser(description='This script is  a simple script for concatenate alignments in fasta format.')
  
-parser.add_argument('-d', action= 'store', dest = 'delimiter', default = '|', type =str,  help='Specify field delimiter in fasta id. fisrt element is considered to be OTU name.' )
-parser.add_argument('-a', dest = 'alignments', type = str, nargs= '+',  help = 'Files to process(fasta alignment)')
+parser.add_argument('-d', action= 'store', dest = 'delimiter', default = '|', type =str,  help='Specify field delimiter in fasta identifier. First element is considered to be OTU name and should be identical in the different alignments.')
+parser.add_argument('-in', dest = 'alignments', type = str, nargs= '+',  help = 'Files to process(fasta alignment)')
+
 arguments = parser.parse_args()
 
 #print arguments
@@ -42,7 +43,7 @@ def is_ID(Line):
         return False
 
 def Get_OTUS(List):
-    """ Take a file name  or list ost of file names and populates the global variable with all distinct OTUS found across all input files. The detailed output of this fuction is written to the  Log file """
+    """ Take a file name  or list of of file names and populates the global variable with all distinct OTUS found across all input files. The detailed output of this fuction is written to the  Log file """
     for Alignment in List:
         with open(Alignment, 'r') as Al:
             for Line in Al:
@@ -51,7 +52,6 @@ def Get_OTUS(List):
                     OTU = Line.strip('>').split(Delim)[0]
                     if OTU not in OTUS:
                         OTUS.append(OTU)
-        
         Log.write("The are are %r OTUS in the input file %s. \n" % (len(OTUS), Alignment))
         [Log.write(OTU + '\n') for OTU in OTUS]
         Al.close()
@@ -82,7 +82,7 @@ def Fasta_Parser(File):
     F.close()
         
 def is_Alignment(Arg):
-    """Return True or False after evaluating that the length of all sequences in the input file are the same length. inputs are either file names, or Fasta_record objects."""
+    """Return True or False after evaluating that the length of all sequences in the input file are the same length.Arguments are either file names, or Fasta_record objects."""
     if type(Arg) != dict:
         Arg=Fasta_Parser(Arg)
         Ref = Arg.keys()[0]
@@ -118,13 +118,12 @@ def Write_Fasta(Dict):
             
 # Concatenate Alignments
 if __name__ == "__main__":
-    if len(argv) < 4:
-        print "Error not enough arguments to proceed"
+    if len(args.alignments) < 4:
+        print "Error not enough arguments to proceed, you need at least two alignments to concatenate."
     else:
         Get_OTUS(Targets) # get a list with all OTUS
-        SDict={key: '' for key in OTUS} #Makes an Dictionary with all OTUS as keys and and empty sequences.
+        SDict={key:'' for key in OTUS} #Makes an Dictionary with all OTUS as keys and and empty sequences.
         CL = 0 # Initialize counter for position
-
         for File in Targets:
             D=Fasta_Parser(File)
             if is_Alignment(D):
@@ -151,6 +150,7 @@ if __name__ == "__main__":
             Log.write("The alignment of the locus %s file contained %d sequences.\n" % (File, Role))
             Log.write("The length of the alignment is %d positions.\n" % Len)
             Log.write("The alignment contains %d missing entries.\n" % TotalGaps)
+
         Write_Fasta(SDict)
         Log.close()
         Part.close()

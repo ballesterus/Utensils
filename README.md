@@ -1,6 +1,6 @@
  <h1>PhyloUtensils</h1><img src='miLogo.png' width='20%'>
 
-Simple scripts for working with sequence data and trees (mostly fasta and newick) for phylogenetics. 
+Simple scripts for working with sequence data and trees (mostly fasta and newick) for phylogenetics.s 
 <ul>
 	<li><a href = '#1'>geneStitcher.py</a></li>
 	<li><a href = '#2'>this4that.py</a></li>
@@ -80,14 +80,14 @@ Sp4,Theridiosoma_sp.
 
 TODO:
 * Process multiple column csv for flexible renaming.
-* For fasta files alert of non modified records.
+* For fasta files, alert of non modified records.
 * Custom name appending and delimiters.
 * Get organism name from genebank sequences
 
 
 <h3><a name='3'>RYplace.py</a></h3>
 
-Recodes nucleotide sequences in the input file(s)(fasta) replacing  purines (A, G) with 'R' and  pyrimidines (T, C) with 'Y'. Its purpose is to ameliorate the effects base composition biases in phylogenetic inference. Yu should however test fisrt if you data partition sufferes from heterogeneus base composition,  eg. p4 https://code.google.com/p/p4-phylogenetics/
+Recodes nucleotide sequences in the input file(s)(fasta) replacing  purines (A, G) with 'R' and  pyrimidines (T, C) with 'Y'. Its purpose is to ameliorate the effects base composition biases in phylogenetic inference. However, you may want to test first if your data partition sufferes from heterogeneus base composition,  eg. p4 https://code.google.com/p/p4-phylogenetics/
 
 This script takes as argumenets the number of the codon to change 1, 2, 3 or N to recode the whole sequence.
 usage:
