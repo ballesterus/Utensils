@@ -3,10 +3,10 @@
 import argparse
 import re
 from sys import argv
-parser = argparse.ArgumentParser(description='This script is  a simple script for concatenate alignments in fasta format.')
+parser = argparse.ArgumentParser(description='This script is  a simple script for concatenate alignments in FASTA format.')
  
 parser.add_argument('-d', action= 'store', dest = 'delimiter', default = '|', type =str,  help='Specify field delimiter in fasta identifier. First element is considered to be OTU name and should be identical in the different alignments.')
-parser.add_argument('-in', dest = 'alignments', type = str, nargs= '+',  help = 'Files to process(fasta alignment)')
+parser.add_argument('-in', dest = 'alignments', type = str, nargs= '+',  help = 'Files to process(FASTA alignment)')
 
 arguments = parser.parse_args()
 
@@ -118,7 +118,7 @@ def Write_Fasta(Dict):
             
 # Concatenate Alignments
 if __name__ == "__main__":
-    if len(args.alignments) < 4:
+    if len(Targets) <2:
         print "Error not enough arguments to proceed, you need at least two alignments to concatenate."
     else:
         Get_OTUS(Targets) # get a list with all OTUS
