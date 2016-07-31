@@ -1,4 +1,4 @@
-#!usr/bin/env python
+#!/usr/bin/env python
 import re
 import os
 from sys import argv
@@ -51,6 +51,7 @@ for File in Target:
                         Changes +=1
                         Matches+=1
                 if Matches == 0:
+                    Out.write('%s' % Line)
                     print 'ALERT: The identifier %s was not found in the names catalog!' % Line
 
             else:
