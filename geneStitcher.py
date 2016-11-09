@@ -62,7 +62,6 @@ def Fasta_Parser(File):
         Records = {}
         Seq=''
         for Line in F:
-            Line=Line.replace('\n','')
             if is_ID(Line) and len(Seq) == 0:
                 OTU = Line.strip('>').split(Delim)[0]
                 Records[OTU] = FastaRecord(Line)
@@ -110,8 +109,8 @@ def Write_Fasta(Dict):
     """Simple Fasta writer. NO wrap No extra features."""
     SuperMatrix = open('SuperMatrix.al', 'w')
     for Record in sorted(Dict.iterkeys()):
-        Identifier='>' + Record + '\n'
-        Sequence = Dict[Record] + '\n'
+        Identifier='>' + Record
+        Sequence = Dict[Record] + "\n"
         SuperMatrix.write(Identifier)
         SuperMatrix.write(Sequence)
     SuperMatrix.close()
