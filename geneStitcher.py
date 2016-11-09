@@ -62,6 +62,7 @@ def Fasta_Parser(File):
         Records = {}
         Seq=''
         for Line in F:
+            Line=Line.replace('\n','')
             if is_ID(Line) and len(Seq) == 0:
                 OTU = Line.strip('>').split(Delim)[0]
                 Records[OTU] = FastaRecord(Line)
