@@ -66,6 +66,7 @@ def Fasta_Parser(File):
                 OTU = Line.strip('>').split(Delim)[0]
                 Records[OTU] = FastaRecord(Line)
             elif is_ID(Line) and len(Seq) > 0:
+                print Line
                 Records[OTU].Seq = Seq
                 Records[OTU].SeqLen = len(Seq)
                 Records[OTU].SeqGaps = Seq.count('-')
@@ -129,7 +130,7 @@ if __name__ == "__main__":
             if is_Alignment(D):
                 Role = 0 # Count Otus in Alignment
                 Len = D[D.keys()[0]].SeqLen 
-                Dummy = '-'* Len #Generates all gap seq for the terminals missing that loci.
+                Dummy = '?'* Len #Generates all ?  seq for the terminals missing that loci.
                 TotalGaps = 0 
                 Init = 1 + CL
                 End = Init + Len - 1
