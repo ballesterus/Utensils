@@ -108,7 +108,7 @@ def is_Alignment(Arg):
 
 def Write_Fasta(Dict):
     """Simple Fasta writer. NO wrap No extra features."""
-    SuperMatrix = open('SuperMatrix.al', 'w')
+    SuperMatrix = open('SuperMatrix.fas', 'w')
     for Record in sorted(Dict.iterkeys()):
         Identifier='>' + Record
         Sequence = Dict[Record] + "\n"
