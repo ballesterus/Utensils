@@ -20,8 +20,8 @@ Targets=argv
 
 def Is_NT_or_AA(String):
     ''' Returns True  is the sequence is composed of Nucleotide symbols'''
-    NT= ('A','C','G','T','U','R','Y','K','M','S','W','B','D','H','V','N')
-    AA =('A','B','C','D','E','F','G','H','I','K','L','M','N','P','Q','R','S','T','U','V','W','Y','Z','X')
+    NT= ('A','C','G','T','U','R','Y','K','M','S','W','B','D','H','V','N', '-', '?')
+    AA =('A','B','C','D','E','F','G','H','I','K','L','M','N','P','Q','R','S','T','U','V','W','Y','Z','X', '-', '?')
     Comp = set(String)
     if all([i in NT for i in Comp]):
         return True
