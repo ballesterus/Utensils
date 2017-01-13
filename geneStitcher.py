@@ -112,7 +112,7 @@ def Write_Fasta(Dict):
     for Record in sorted(Dict.iterkeys()):
         Identifier='>' + Record
         Sequence = Dict[Record] + "\n"
-        SuperMatrix.write(Identifier)
+        SuperMatrix.write(Identifier + '\n')
         SuperMatrix.write(Sequence)
     SuperMatrix.close()
 
@@ -145,7 +145,7 @@ if __name__ == "__main__":
                         SDict[OTU]= SDict[OTU] + Dummy
                         TotalGaps = TotalGaps + Len
             else:
-                print "Error: The File %d  contains sequences of different lengths!" % File
+                print "Error: The File %s  contains sequences of different lengths!" % File
                 break
             Log.write("*" * 70 + '\n')
             Log.write("The alignment of the locus %s file contained %d sequences.\n" % (File, Role))

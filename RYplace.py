@@ -17,11 +17,11 @@ Targets=argv
 
 ##FUNCTION DEFINITIONS
 
+NT= ('A','C','G','T','U','R','Y','K','M','S','W','B','D','H','V','N', '-', '?')
+AA =('A','B','C','D','E','F','G','H','I','K','L','M','N','P','Q','R','S','T','U','V','W','Y','Z','X', '-', '?')
 
 def Is_NT_or_AA(String):
     ''' Returns True  is the sequence is composed of Nucleotide symbols'''
-    NT= ('A','C','G','T','U','R','Y','K','M','S','W','B','D','H','V','N', '-', '?')
-    AA =('A','B','C','D','E','F','G','H','I','K','L','M','N','P','Q','R','S','T','U','V','W','Y','Z','X', '-', '?')
     Comp = set(String)
     if all([i in NT for i in Comp]):
         return True
@@ -78,9 +78,16 @@ for File in Targets:
             if Line.startswith('>'):
                 Out.write(Line + '\n')
             else:
+                Line = Line.upper()
                 if Is_NT_or_AA(Line):
                     if Codon == 'N':
                         Out.write(All_2_RY(Line) + '\n')
                     else:
                         Out.write(Codon_2_RY(Line, Codon) + '\n')
+                else:
+                    strange =""
+                    for i in Line:
+                        if i not in NT:
+                            strange=strange+i
+                    print 'Error: Strange characters in the sequence: "%s"' %strange
 
