@@ -5,7 +5,10 @@ Simple scripts for working with sequence data and trees (mostly fasta and newick
 	<li><a href = '#1'>geneStitcher.py</a></li>
 	<li><a href = '#2'>this4that.py</a></li>
 	<li><a href = '#3'>RYplace.py<a></li>
-	<li><a href = '#4'>Dependencies</a></li>
+	<li><a href = '#4'>splitcodon.awk</a></li>
+	<li><a href = '#5'>Dependencies</a></li>
+	
+	
 </ul>
 
 <h3><a name ='1'>geneStitcher.py</a></h3>
@@ -98,7 +101,7 @@ usage:
 
 The RY coded versions add the suffix '_RY' to the file name.
 
-<h3><a name = '2'>splitcodon.awk</a></h3>
+<h3><a name = '4'>splitcodon.awk</a></h3>
 
 Self explanatory, takes as input a FASTA file and produces a FASTA where only the specified codon positions of the sequences are present. The output is printed to the STDOUT and can be redirected to a file using ">" or ">>".
 
@@ -107,6 +110,6 @@ usage:
 ```awk splitcodon.awk gene.fasta 3 >  gene_3.fasta```
 
 
-<h3><a name = '4'>Dependencies<a></h3>
+<h3><a name = '5'>Dependencies<a></h3>
 python 2.7	All scripts are written in pure python and standard modules (os re sys).
 
