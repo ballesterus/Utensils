@@ -1,4 +1,4 @@
- <h1>PhyloUtensils</h1><img src='miLogo.png' width='20%'>
+ <h1>Utensils</h1><img src='miLogo.png' width='20%'>
 
 Simple scripts for working with sequence data and trees (mostly fasta and newick) for phylogenetics.s 
 <ul>
