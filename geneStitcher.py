@@ -4,7 +4,6 @@ import argparse
 import re
 from sys import argv
 parser = argparse.ArgumentParser(description='This script is  a simple script for concatenate alignments in FASTA format.')
- 
 parser.add_argument('-d', action= 'store', dest = 'delimiter', default = '|', type =str,  help='Specify field delimiter in fasta identifier. First element is considered to be OTU name and should be identical in the different alignments.')
 parser.add_argument('-in', dest = 'alignments', type = str, nargs= '+',  help = 'Files to process(FASTA alignment)')
 
@@ -23,7 +22,7 @@ Part = open('Partition.txt', 'w+')
 
 #Global variables
 OTUS = []
-
+Problems=[]
 #Classes
 
 class FastaRecord():
@@ -45,16 +44,20 @@ def is_ID(Line):
 def Get_OTUS(List):
     """ Take a file name  or list of of file names and populates the global variable with all distinct OTUS found across all input files. The detailed output of this fuction is written to the  Log file """
     for Alignment in List:
-        with open(Alignment, 'r') as Al:
-            for Line in Al:
-                if Line.startswith('>'):
-                    Line = Line + Delim
-                    OTU = Line.strip('>').split(Delim)[0]
-                    if OTU not in OTUS:
-                        OTUS.append(OTU)
-        Log.write("The are are %r OTUS in the input file %s. \n" % (len(OTUS), Alignment))
-        [Log.write(OTU + '\n') for OTU in OTUS]
-        Al.close()
+        try:
+            with open(Alignment, 'r') as Al:
+                for Line in Al:
+                    if Line.startswith('>'):
+                        Line = Line + Delim
+                        OTU = Line.strip('>').split(Delim)[0]
+                        if OTU not in OTUS:
+                            OTUS.append(OTU)
+            Log.write("The are are %r OTUS in the input file %s. \n" % (len(OTUS), Alignment))
+            [Log.write(OTU + '\n') for OTU in OTUS]
+            Al.close()
+        except:
+            print 'Problem reading alignment: %s' % Alignment
+            Problems.append(Alignment)
 
 def Fasta_Parser(File):
     """This function returns a dictionary containing objects of the class FastaRecord, the taxon name or OTU is the index for this Dictionary."""
@@ -66,7 +69,7 @@ def Fasta_Parser(File):
                 OTU = Line.strip('>').split(Delim)[0]
                 Records[OTU] = FastaRecord(Line)
             elif is_ID(Line) and len(Seq) > 0:
-                print Line
+                #print Line
                 Records[OTU].Seq = Seq
                 Records[OTU].SeqLen = len(Seq)
                 Records[OTU].SeqGaps = Seq.count('-')
@@ -125,6 +128,7 @@ if __name__ == "__main__":
         Get_OTUS(Targets) # get a list with all OTUS
         SDict={key:'' for key in OTUS} #Makes an Dictionary with all OTUS as keys and and empty sequences.
         CL = 0 # Initialize counter for position
+        Targets = [x for x in Targets if x not in Problems]
         for File in Targets:
             D=Fasta_Parser(File)
             if is_Alignment(D):
@@ -151,7 +155,7 @@ if __name__ == "__main__":
             Log.write("The alignment of the locus %s file contained %d sequences.\n" % (File, Role))
             Log.write("The length of the alignment is %d positions.\n" % Len)
             Log.write("The alignment contains %d missing entries.\n" % TotalGaps)
-
         Write_Fasta(SDict)
         Log.close()
         Part.close()
+        print "The following files are not included in the final matrix :%s" % (' ').join(Problems)
