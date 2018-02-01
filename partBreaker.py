@@ -31,7 +31,7 @@ def main(matrix, partfile, outdir):
             Subsetfromto(Smatrix, outf, start, end)
                     
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='This script is  a simple script for breaking supermatrices in individual MSA based on a partition file. The  required partition file is a two column comma separated value text file where the fisrt column indicates the name of partition, recycled to be used as the name of the output file, and the second column is an interval of the postions in the supermatrix, separated only by "-". This script deals only with consecutive data blocks. Codon partitioning is not implemented... yet.')
+    parser = argparse.ArgumentParser(description='This is  a simple script for breaking supermatrices in individual MSA based on a partition file. The  required partition file is a two column comma separated value text file where the fisrt column indicates the name of partition, recycled to be used as the name of the output file, and the second column is an interval of the positions in the supermatrix, separated only by "-". This script deals only with consecutive data blocks. Codon partitioning is not implemented... yet.')
  
     parser.add_argument('-in', dest = 'matrix', type = str,   help = 'Input alignemnets in fasta format')
     parser.add_argument('-p', dest = 'partitions', type =str, help = 'Input partiotion definition file: a comma separated text file with two columns, ')
