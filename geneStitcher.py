@@ -95,8 +95,7 @@ def is_Alignment(Arg):
             return True
         else:
             for key in Arg.iterkeys():
-                print Arg[key].SeqId
-                print Arg[key].SeqLen
+                print "Warning %s lenght: %d" % (Arg[key].SeqId, Arg[key].SeqLen)
             return False
     else:
         Ref = Arg.keys()[0]
@@ -105,8 +104,7 @@ def is_Alignment(Arg):
             return True
         else:
             for key in Arg.iterkeys():
-                print Arg[key].SeqId
-                print Arg[key].SeqLen
+                print "Warning %s lenght: %d" % (Arg[key].SeqId, Arg[key].SeqLen)
             return False
 
 def Write_Fasta(Dict):
@@ -130,9 +128,9 @@ if __name__ == "__main__":
         CL = 0 # Initialize counter for position
         Targets = [x for x in Targets if x not in Problems]
         for File in Targets:
+            Role = 0 # Count Otus in Alignment
             D=Fasta_Parser(File)
             if is_Alignment(D):
-                Role = 0 # Count Otus in Alignment
                 Len = D[D.keys()[0]].SeqLen 
                 Dummy = '?'* Len #Generates all ?  seq for the terminals missing that loci.
                 TotalGaps = 0 
@@ -148,14 +146,18 @@ if __name__ == "__main__":
                     else:
                         SDict[OTU]= SDict[OTU] + Dummy
                         TotalGaps = TotalGaps + Len
+                Log.write("*" * 70 + '\n')
+                Log.write("The alignment of the locus %s file contained %d sequences.\n" % (File, Role))
+                Log.write("The length of the alignment is %d positions.\n" % Len)
+                Log.write("The alignment contains %d missing entries.\n" % TotalGaps)
             else:
+                Problems.append(File)
                 print "Error: The File %s  contains sequences of different lengths!" % File
-                break
-            Log.write("*" * 70 + '\n')
-            Log.write("The alignment of the locus %s file contained %d sequences.\n" % (File, Role))
-            Log.write("The length of the alignment is %d positions.\n" % Len)
-            Log.write("The alignment contains %d missing entries.\n" % TotalGaps)
+            
         Write_Fasta(SDict)
         Log.close()
         Part.close()
-        print "The following files are not included in the final matrix :%s" % (' ').join(Problems)
+        if len(Problems) >0:
+            print "The following files are not included in the final matrix: %s" % (' ').join(Problems)
+        else:
+            print "Done, goodbye!"
