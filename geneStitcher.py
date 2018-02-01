@@ -3,22 +3,10 @@
 import argparse
 import re
 from sys import argv
-parser = argparse.ArgumentParser(description='This script is  a simple script for concatenate alignments in FASTA format.')
-parser.add_argument('-d', action= 'store', dest = 'delimiter', default = '|', type =str,  help='Specify field delimiter in fasta identifier. First element is considered to be OTU name and should be identical in the different alignments.')
-parser.add_argument('-in', dest = 'alignments', type = str, nargs= '+',  help = 'Files to process(FASTA alignment)')
-
-arguments = parser.parse_args()
+from partBreaker import WritePresAb
 
 #print arguments
 
-Delim = arguments.delimiter
-Targets = arguments.alignments
-
-#print argv #print list of arguments. Activate for debugging.
-
-#Outputfiles
-Log = open('StitcherLog.out', 'w+')
-Part = open('Partition.txt', 'w+')
 
 #Global variables
 OTUS = []
@@ -120,11 +108,23 @@ def Write_Fasta(Dict):
             
 # Concatenate Alignments
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='This script is  a simple script for concatenate alignments in FASTA format.')
+    parser.add_argument('-d', action= 'store', dest = 'delimiter', default = '|', type =str,  help='Specify field delimiter in fasta identifier. First element is considered to be OTU name and should be identical in the different alignments.')
+    parser.add_argument('-in', dest = 'alignments', type = str, nargs= '+',  help = 'Files to process(FASTA alignment)')
+
+    arguments = parser.parse_args()
+    Delim = arguments.delimiter
+    Targets = arguments.alignments
+    Log = open('StitcherLog.out', 'w+')
+    Part = open('Partition.txt', 'w+')
+    
     if len(Targets) <2:
         print "Error not enough arguments to proceed, you need at least two alignments to concatenate."
     else:
         Get_OTUS(Targets) # get a list with all OTUS
-        SDict={key:'' for key in OTUS} #Makes an Dictionary with all OTUS as keys and and empty sequences.
+        SDict={key:'' for key in OTUS} #Makes an Dictionary with all OTUS as keys and  empty sequences.
+        presab={key:[] for key in OTUS} #Makes an Dictionary with all OTUS as keys and  empty sequences.
+        presab['loci']=[]
         CL = 0 # Initialize counter for position
         Targets = [x for x in Targets if x not in Problems]
         for File in Targets:
@@ -138,12 +138,15 @@ if __name__ == "__main__":
                 End = Init + Len - 1
                 CL = End
                 Part.write("%s, %d-%d;\n"  % (File.split('.')[0], Init, End))
+                presab['loci'].append(File.split('.')[0])
                 for OTU in SDict.iterkeys(): #Populate the Dictionary with Sequences.
                     if OTU in D.keys():
+                        presab[OTU].append('1')
                         SDict[OTU] = SDict[OTU] + D[OTU].Seq
                         Role +=1
                         TotalGaps = TotalGaps + D[OTU].SeqGaps
                     else:
+                        presab[OTU].append('0')
                         SDict[OTU]= SDict[OTU] + Dummy
                         TotalGaps = TotalGaps + Len
                 Log.write("*" * 70 + '\n')
@@ -153,7 +156,8 @@ if __name__ == "__main__":
             else:
                 Problems.append(File)
                 print "Error: The File %s  contains sequences of different lengths!" % File
-            
+
+        WritePresAb(presab, 'PAmatrix.txt')
         Write_Fasta(SDict)
         Log.close()
         Part.close()
