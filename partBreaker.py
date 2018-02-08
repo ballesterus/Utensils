@@ -20,11 +20,11 @@ def Subsetfromto(FastaDict, outFile, start,end):
             if seqID not in presab.keys():
                 presab[seqID]=[]
             seq=FastaDict[seqID][start:end]
-            out.write(">%s\n%s\n" %(seqID,seq))
             if set(seq).issubset(miss):
                 presab[seqID].append('0')
             else: 
                 presab[seqID].append('1')
+                out.write(">%s\n%s\n" %(seqID,seq))
 
 def WritePresAb(paDic, outfile):
     """Writes the presence absence matrix (paDic) to a text file"""
