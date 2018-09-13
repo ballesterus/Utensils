@@ -11,7 +11,7 @@ BEGIN{RS="@";
     delete ARGV[2];
     srand();
 
-    print "Usage:\n\tsampleReads.awk <INFILE.fastq> <NUMBER OF READS TO BE SAMPLED>\n\nIf no number is provided reads will be sampled randomly till the end of the inpuit file.\n\n";
+    print "Usage:\n\tsampleReads.awk <INFILE.fastq> <NUMBER OF READS TO BE SAMPLED>\n\nIf no number is provided reads will be sampled randomly till the end of the input file.\n\n";
 
 }
 {
