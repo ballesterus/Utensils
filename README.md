@@ -27,11 +27,11 @@ printing help:
 ```>python geneStitcher.py -h```
 
 
-```>python geneStitcher.py 1.fasta 2.fasta 3.fasta```
+```>python geneStitcher.py -in 1.fasta 2.fasta 3.fasta```
 
 or
 
-```>python geneStitcher.py *.fasta -d '@'```
+```>python geneStitcher.py -in *.fasta -d '@'```
 
 Example:
 
