@@ -137,7 +137,7 @@ if __name__ == "__main__":
                 Init = 1 + CL
                 End = Init + Len - 1
                 CL = End
-                Part.write("%s, %d-%d;\n"  % (File.split('.')[0], Init, End))
+                Part.write("%s = %d-%d;\n"  % (File.split('.')[0], Init, End))
                 presab['loci'].append(File.split('.')[0])
                 for OTU in SDict.iterkeys(): #Populate the Dictionary with Sequences.
                     if OTU in D.keys():
