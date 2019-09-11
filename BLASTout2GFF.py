@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import argv
+from sys import argv
 
 def usage():
     print """Writes a simple genome feature file (GFF) from comma separated BLAST output file (-outfmt 10)\n
@@ -25,23 +25,24 @@ def parse_blastn(fname):
 			    if genes[gene][1] > eval:
 				genes[gene]=[Subject, eval,sstart,send]
 		except:
-	            genes[gene]=[Subject, sstart,send,eval]
+	            genes[gene]=[Subject,eval, sstart,send]
 	return genes
     
 def dict_to_gff(DictGenes,ofile):
 	O= open(ofile, "w" )
 	for k in DictGenes:	
 		strand = "+"
-		if int (DictGenes[k][2]) >int (DictGenes[k][3]):
+		if int (DictGenes[k][2]) > int(DictGenes[k][3]):
 			strand= "-"
-			O.write("%s\t%s\tuce\t%d\t%d\t%s\t%s\t.\tk\n" %(DictGenes[k][0],k,DictGenes[k][3],DictGenes[k][2],DictGenes[k][1],strand))
+			O.write("%s\t%s\tuce\t%s\t%s\t%s\t%s\t.\t.\n" %(DictGenes[k][0],k,DictGenes[k][3],DictGenes[k][2],DictGenes[k][1],strand))
 		else:
-			O.write("%s\t%s\tuce\t%d\t%d\t%s\t%s\t.\tk\n" %(DictGenes[k][0],k,DictGenes[k][2],DictGenes[k][3],DictGenes[k][1],strand))
+			O.write("%s\t%s\tuce\t%s\t%s\t%s\t%s\t.\t.\n" %(DictGenes[k][0],k,DictGenes[k][2],DictGenes[k][3],DictGenes[k][1],strand))
 ##MAIN##
 if __name__ == "__main__":
-    if len(argv) != 1:
+    if len(argv) != 2:
         usage()
-    ifile=argv[1]
-    oname="%s.gff" % ifile.split(".")[0]
-    T=parse_blastn(ifile)
-    dict_to_gff(T, oname)
+    else:
+        ifile=argv[1]
+        oname="%s.gff" % ifile.split(".")[0]
+        T=parse_blastn(ifile)
+        dict_to_gff(T, oname)
