@@ -16,7 +16,7 @@ miss=set(['-', '?'])
 def Subsetfromto(FastaDict, outFile, start,end):
     """Writes a subsect multifast file, boud at sequence indeces start and end, form sequence stored in a dictioanry"""
     with open(outFile, 'w') as out:
-        for seqID in FastaDict.iterkeys():
+        for seqID in FastaDict.keys():
             if seqID not in presab.keys():
                 presab[seqID]=[]
             seq=FastaDict[seqID][start:end]
@@ -29,7 +29,7 @@ def Subsetfromto(FastaDict, outFile, start,end):
 def WritePresAb(paDic, outfile):
     """Writes the presence absence matrix (paDic) to a text file"""
     with open(outfile, 'w') as out:
-        for k in paDic.iterkeys():
+        for k in paDic.keys():
             if k != 'loci':
                 out.write('%s\t%s\n' %(k, ' '.join(paDic[k])))
         out.write('\nList of loci:\n%s' % ' '.join(paDic['loci']))

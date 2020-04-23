@@ -77,32 +77,32 @@ def is_Alignment(Arg):
     """Return True or False after evaluating that the length of all sequences in the input file are the same length.Arguments are either file names, or Fasta_record objects."""
     if type(Arg) != dict:
         Arg=Fasta_Parser(Arg)
-        Ref = Arg.keys()[0]
+        Ref = list(Arg.keys())[0]
         Len= Arg[Ref].SeqLen # obtain a reference from the 1st dict entry.                   
         if all(Len == Arg[key].SeqLen for key in Arg.iterkeys()):
             return True
         else:
-            for key in Arg.iterkeys():
+            for key in Arg.keys():
                 print("Warning %s lenght: %d" % (Arg[key].SeqId, Arg[key].SeqLen))
             return False
     else:
-        Ref = Arg.keys()[0]
+        Ref = list(Arg.keys())[0]
         Len= Arg[Ref].SeqLen # obtain a reference from the 1st dict entry.                                           
-        if all(Len == Arg[key].SeqLen for key in Arg.iterkeys()):
+        if all(Len == Arg[key].SeqLen for key in Arg.keys()):
             return True
         else:
-            for key in Arg.iterkeys():
+            for key in Arg.keys():
                 print("Warning %s lenght: %d" % (Arg[key].SeqId, Arg[key].SeqLen))
             return False
 
 def Write_Fasta(Dict):
     """Simple Fasta writer. NO wrap No extra features."""
     SuperMatrix = open('SuperMatrix.fas', 'w')
-    for Record in sorted(Dict.iterkeys()):
-        Identifier='>' + Record
-        Sequence = Dict[Record] + "\n"
-        SuperMatrix.write(Identifier + '\n')
-        SuperMatrix.write(Sequence)
+    for Record in sorted(Dict.keys()):
+#       Identifier='>' + Record
+#        Sequence = Dict[Record] + "\n"
+        SuperMatrix.write(">%s%s\n" %(Record, Dict[Record]))
+#        SuperMatrix.write(Sequence)
     SuperMatrix.close()
 
             
@@ -131,7 +131,7 @@ if __name__ == "__main__":
             Role = 0 # Count Otus in Alignment
             D=Fasta_Parser(File)
             if is_Alignment(D):
-                Len = D[D.keys()[0]].SeqLen 
+                Len = D[list(D.keys())[0]].SeqLen 
                 Dummy = '?'* Len #Generates all ?  seq for the terminals missing that loci.
                 TotalGaps = 0 
                 Init = 1 + CL
@@ -139,7 +139,7 @@ if __name__ == "__main__":
                 CL = End
                 Part.write("%s = %d-%d;\n"  % (File.split('.')[0], Init, End))
                 presab['loci'].append(File.split('.')[0])
-                for OTU in SDict.iterkeys(): #Populate the Dictionary with Sequences.
+                for OTU in SDict.keys(): #Populate the Dictionary with Sequences.
                     if OTU in D.keys():
                         presab[OTU].append('1')
                         SDict[OTU] = SDict[OTU] + D[OTU].Seq
