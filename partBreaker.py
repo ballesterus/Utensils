@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python 3
 
  
 import argparse
@@ -39,7 +39,7 @@ def main(matrix, partfile, outdir):
     if not os.path.exists(outdir):
         os.makedirs(outdir)
     else:
-        print 'The output dir already exist!'
+        print ('The output dir already exist!')
     with open(partfile, 'r') as P:
         for pline in P:
             outN=pline.split(',')[0]

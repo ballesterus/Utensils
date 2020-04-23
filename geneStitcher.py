@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
  
 import argparse
 import re
@@ -44,7 +44,7 @@ def Get_OTUS(List):
             [Log.write(OTU + '\n') for OTU in OTUS]
             Al.close()
         except:
-            print 'Problem reading alignment: %s' % Alignment
+            print('Problem reading alignment: %s' % Alignment)
             Problems.append(Alignment)
 
 def Fasta_Parser(File):
@@ -83,7 +83,7 @@ def is_Alignment(Arg):
             return True
         else:
             for key in Arg.iterkeys():
-                print "Warning %s lenght: %d" % (Arg[key].SeqId, Arg[key].SeqLen)
+                print("Warning %s lenght: %d" % (Arg[key].SeqId, Arg[key].SeqLen))
             return False
     else:
         Ref = Arg.keys()[0]
@@ -92,7 +92,7 @@ def is_Alignment(Arg):
             return True
         else:
             for key in Arg.iterkeys():
-                print "Warning %s lenght: %d" % (Arg[key].SeqId, Arg[key].SeqLen)
+                print("Warning %s lenght: %d" % (Arg[key].SeqId, Arg[key].SeqLen))
             return False
 
 def Write_Fasta(Dict):
@@ -119,7 +119,7 @@ if __name__ == "__main__":
     Part = open('Partition.txt', 'w+')
     
     if len(Targets) <2:
-        print "Error not enough arguments to proceed, you need at least two alignments to concatenate."
+        print("Error not enough arguments to proceed, you need at least two alignments to concatenate.")
     else:
         Get_OTUS(Targets) # get a list with all OTUS
         SDict={key:'' for key in OTUS} #Makes an Dictionary with all OTUS as keys and  empty sequences.
@@ -155,13 +155,13 @@ if __name__ == "__main__":
                 Log.write("The alignment contains %d missing entries.\n" % TotalGaps)
             else:
                 Problems.append(File)
-                print "Error: The File %s  contains sequences of different lengths!" % File
+                print ("Error: The File %s  contains sequences of different lengths!" % File)
 
         WritePresAb(presab, 'PAmatrix.txt')
         Write_Fasta(SDict)
         Log.close()
         Part.close()
         if len(Problems) >0:
-            print "The following files are not included in the final matrix: %s" % (' ').join(Problems)
+            print ("The following files are not included in the final matrix: %s" % (' ').join(Problems))
         else:
-            print "Done, goodbye!"
+            print("Done, goodbye!")
