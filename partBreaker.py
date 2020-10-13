@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-
- 
+#!/usr/bin/env python3
 import argparse
 import Get_fasta_from_Ref as GFR 
 import re
@@ -14,14 +12,15 @@ miss=set(['-', '?'])
 
 
 def Subsetfromto(FastaDict, outFile, start,end):
-    """Writes a subsect multifast file, boud at sequence indeces start and end, form sequence stored in a dictioanry"""
+    """Writes a subsect multifasta file, boud at sequence indexes start and end, form sequence stored in a dictionary"""
     with open(outFile, 'w') as out:
-        for seqID in FastaDict.iterkeys():
+        for seqID in FastaDict.keys():
             if seqID not in presab.keys():
                 presab[seqID]=[]
             seq=FastaDict[seqID][start:end]
             if set(seq).issubset(miss):
                 presab[seqID].append('0')
+                out.write(">%s\n%s\n" %(seqID,seq))
             else: 
                 presab[seqID].append('1')
                 out.write(">%s\n%s\n" %(seqID,seq))
@@ -29,7 +28,7 @@ def Subsetfromto(FastaDict, outFile, start,end):
 def WritePresAb(paDic, outfile):
     """Writes the presence absence matrix (paDic) to a text file"""
     with open(outfile, 'w') as out:
-        for k in paDic.iterkeys():
+        for k in paDic.keys():
             if k != 'loci':
                 out.write('%s\t%s\n' %(k, ' '.join(paDic[k])))
         out.write('\nList of loci:\n%s' % ' '.join(paDic['loci']))
@@ -39,7 +38,7 @@ def main(matrix, partfile, outdir):
     if not os.path.exists(outdir):
         os.makedirs(outdir)
     else:
-        print 'The output dir already exist!'
+        print ('The output dir already exist!')
     with open(partfile, 'r') as P:
         for pline in P:
             outN=pline.split(',')[0]
