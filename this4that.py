@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import re
 import os
 #import UPhO
@@ -38,7 +38,7 @@ def makefromtodict(namesCSV):
                 To = To.strip('\n')
                 namesdict[From] = To
             except:
-                print "ERROR on: %s" % (Line)
+                print ("ERROR on: %s" % (Line))
     return namesdict
 
 
@@ -52,7 +52,7 @@ for File in Target:
         OutFName = '%s_renamed.%s' % (File.split('.')[0], File.split('.')[1])
         Out= open(OutFName,'w')
         for Line in F:
-            for From in FTdict.iterkeys():
+            for From in FTdict.keys():
                  To=FTdict[From]
                  reexpress="(?<![0-9A-Za-z_:|\.])%s(?=[,;\):\n\s])" % From
                  if re.search(reexpress, Line):
@@ -60,7 +60,7 @@ for File in Target:
                      Changes +=1
             Out.write(Line)
         Out.close()
-        print "Names found/changed in %s = %d\n" %(File,Changes)
+        print ("Names found/changed in %s = %d\n" %(File,Changes))
         if Changes == 0: 
             Log.write('%s: %d changes.' %(File, Changes))
             os.remove(OutFName)
@@ -68,4 +68,4 @@ for File in Target:
             Log.write('%s: %d changes.' %(File, Changes))
         
         Log.close()
-print "All done!"
+print ("All done!")
