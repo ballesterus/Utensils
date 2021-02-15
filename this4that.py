@@ -53,11 +53,11 @@ for File in Target:
         Out= open(OutFName,'w')
         for Line in F:
             for From in FTdict.keys():
-                 To=FTdict[From]
-                 reexpress="(?<![0-9A-Za-z_:|\.])%s(?=[,;\):\n\s])" % From
-                 if re.search(reexpress, Line):
-                     Line=re.sub(reexpress, To, Line)
-                     Changes +=1
+                To=FTdict[From]
+                reexpress="(?<![0-9A-Za-z_:|\.])%s(?=[,|;\):\n\s])" % From
+                if re.search(reexpress, Line):
+                    Line=re.sub(reexpress, To, Line)
+                    Changes +=1
             Out.write(Line)
         Out.close()
         print ("Names found/changed in %s = %d\n" %(File,Changes))
